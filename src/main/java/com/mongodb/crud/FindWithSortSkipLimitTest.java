@@ -19,6 +19,7 @@ package com.mongodb.crud;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Sorts;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -26,7 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
+import static com.mongodb.client.model.Sorts.orderBy;
 import static com.mongodb.m101j.util.Helpers.printJson;
 
 public class FindWithSortSkipLimitTest {
@@ -45,14 +48,17 @@ public class FindWithSortSkipLimitTest {
         }
 
         Bson projection = fields(include("i", "j"), excludeId());
+//        Bson sort = new Document("i", 1).append("j", -1);
+//        Bson sort = Sorts.descending("j", "i");
+//        Bson sort = orderBy(descending("j"),ascending( "i"));
         Bson sort = descending("j", "i");
 
         List<Document> all = collection.find()
-                                       .projection(projection)
-                                       .sort(sort)
-                                       .skip(20)
-                                       .limit(50)
-                                       .into(new ArrayList<Document>());
+                .projection(projection)
+                .sort(sort)
+                .skip(20)
+                .limit(50)
+                .into(new ArrayList<Document>());
 
         for (Document cur : all) {
             printJson(cur);

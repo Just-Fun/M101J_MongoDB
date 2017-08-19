@@ -24,6 +24,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gt;
 import static com.mongodb.m101j.util.Helpers.printJson;
 
 public class DeleteTest {
@@ -39,6 +40,8 @@ public class DeleteTest {
             collection.insertOne(new Document().append("_id", i));
         }
 
+//        collection.deleteMany(gt("_id", 4));
+//        collection.deleteOne(gt("_id", 4));
         collection.deleteOne(eq("_id", 4));
 
         for (Document cur : collection.find().into(new ArrayList<Document>())) {
